@@ -2,7 +2,7 @@
 //  LoggedInViewController.swift
 //  Sign in with apple demo
 //
-//  Created by Piotrek on 13/10/2019.
+//  Created by Piotr Smajek on 13/10/2019.
 //  Copyright © 2019 Miquido. All rights reserved.
 //
 
@@ -17,7 +17,8 @@ class LoggedInViewController: UIViewController {
     @IBOutlet weak var lastNameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
 
-    var credentials: Credentials?
+    var viewModel: LoggedInViewModel?
+
     private let notificationName = ASAuthorizationAppleIDProvider.credentialRevokedNotification
 
     override func viewDidLoad() {
@@ -31,10 +32,10 @@ class LoggedInViewController: UIViewController {
     }
 
     private func setupLabels() {
-        userIdentifierLabel.text = credentials?.userIdentifier
-        firstNameLabel.text = credentials?.firstName
-        lastNameLabel.text = credentials?.lastName
-        emailLabel.text = credentials?.email
+        userIdentifierLabel.text = viewModel?.credentials.userIdentifier
+        firstNameLabel.text = viewModel?.credentials.firstName
+        lastNameLabel.text = viewModel?.credentials.lastName
+        emailLabel.text = viewModel?.credentials.email
     }
 
     private func setupNotification() {
@@ -48,10 +49,18 @@ class LoggedInViewController: UIViewController {
     }
 
     private func signOut() {
-        try! Keychain.deleteAll()
+        do {
+            try Keychain.deleteAll()
+        } catch {
+            // handle error
+            print(error)
+            return
+        }
+
         DispatchQueue.main.async {
             guard let viewController = UIStoryboard.instantiateVC(Scene.login) as? LoginViewController else { return }
-            viewController.isFromLogout = true
+            let viewModel = LoginViewModel(isFromLogout: true)
+            viewController.viewModel = viewModel
             UIApplication.shared.set(rootViewController: viewController)
         }
     }

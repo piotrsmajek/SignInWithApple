@@ -2,7 +2,7 @@
 //  Keychain.swift
 //  Sign in with apple demo
 //
-//  Created by Piotrek on 13/10/2019.
+//  Created by Piotr Smajek on 13/10/2019.
 //  Copyright © 2019 Miquido. All rights reserved.
 //
 
@@ -28,7 +28,7 @@ enum Keychain {
             throw Errors.keychainError
         }
     }
-
+    
     private static func add(value: Data, account: String) throws {
         let status = SecItemAdd([
             kSecClass: kSecClassGenericPassword,
@@ -46,8 +46,8 @@ enum Keychain {
             kSecAttrAccount: account,
             kSecAttrService: service,
             ] as NSDictionary, [
-            kSecValueData: value,
-            ] as NSDictionary)
+                kSecValueData: value,
+                ] as NSDictionary)
         guard status == errSecSuccess else { throw Errors.keychainError }
     }
 

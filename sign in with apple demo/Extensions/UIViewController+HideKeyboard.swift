@@ -2,7 +2,7 @@
 //  UIViewController+HideKeyboard.swift
 //  Sign in with apple demo
 //
-//  Created by Piotrek on 12/10/2019.
+//  Created by Piotr Smajek on 12/10/2019.
 //  Copyright © 2019 Miquido. All rights reserved.
 //
 
